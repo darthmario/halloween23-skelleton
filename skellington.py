@@ -16,10 +16,15 @@ keyMatrix = [
 colPins = [2,0,4]
 rowPins = [1,6,5,3]
 
-#Display setup
+# Display setup
 tm = tm1637.TM1637(clk=Pin(8), dio=Pin(7))
 
-#keyscan setup
+# Joystick Setup
+xAxis = ADC(Pin(27))
+yAxis = ADC(Pin(26))
+button = Pin(9, Pin.IN, Pin.PULL_UP)
+
+# keyscan setup
 row = []
 column = []
 
@@ -48,7 +53,15 @@ def printKey():
             tm.show('lock')
         else:
             tm.show("   " + key)
-    utime.sleep(0.2)
+
+
+def getJoystick():
+    xValue = xAxis.read_u16()
+    yValue = yAxis.read_u16()
+    buttonValue = button.value()
+    print(str(xValue)+", "+str(yValue)+" -- "+str(buttonValue))
     
 while True:
     printKey()
+    getJoystick()
+    utime.sleep(0.2)
