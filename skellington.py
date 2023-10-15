@@ -27,6 +27,7 @@ button = Pin(9, Pin.IN, Pin.PULL_UP)
 # keyscan setup
 row = []
 column = []
+keypressed = False;
 
 for item in rowPins:
     row.append(machine.Pin(item, machine.Pin.OUT))
@@ -45,12 +46,19 @@ def scanKeypad():
         row[rowKey].value(0)
 def printKey():
     key=scanKeypad()
+    global keypressed
     if key is not None:
+        print("keypressd value is"+str(keypressed))
         print("Key pressed is:{} ".format(key))
+        keypressed = True
+        print("keypressd value is"+str(keypressed))
+        # now we'll setup the debounce so we don't have to use sleep later on.
         if key == "#":
-            tm.show('play')
+            tm.show('auto')
         elif key == "*":
-            tm.show('lock')
+            tm.show('free')
+        elif key == "0":
+            tm.show('manu')
         else:
             tm.show("   " + key)
 
@@ -63,5 +71,5 @@ def getJoystick():
     
 while True:
     printKey()
-    getJoystick()
+    #getJoystick()
     utime.sleep(0.2)
