@@ -1,0 +1,303 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module moduleId="DFPlayer Mini_3ffa85fa3a0182096f67124857804a14_5" referenceFile="generic_ic_dip_16_300mil.fzp">
+ <version>4</version>
+ <author>Darude</author>
+ <title>DFPlayer MINI</title>
+ <label>DFPlayer Mini</label>
+ <date>Сб фев 6 2016</date>
+ <tags>
+  <tag>DFRobot.com</tag>
+  <tag>Darude</tag>
+  <tag>DFPlayer Mini</tag>
+  <tag>Music</tag>
+  <tag>SD Card</tag>
+  <tag>MP3</tag>
+  <tag>Sound</tag>
+  <tag>WAV</tag>
+ </tags>
+ <properties>
+  <property name="family">Sound Module</property>
+  <property name="variant">variant 1</property>
+  <property name="pin spacing">0.03 in</property>
+  <property name="pins">16</property>
+  <property name="hole size"></property>
+  <property name="layer"></property>
+  <property name="chip label">https://www.google.ru/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=6&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwj5v5XzpePKAhWFhywKHTiLDvkQFggrMAU&amp;url=http%3A%2F%2Fwww.dfrobot.com%2Fwiki%2Findex.php%2FDFPlayer_Mini_SKU%3ADFR0299&amp;usg=AFQjCNEcemPnN3MjyDNeD8A96-J0e6lk3A&amp;sig2=vuvCNL6__jEVOT3Zn23wSQ</property>
+  <property name="editable pin labels">false</property>
+  <property name="package">DIP (Dual Inline) [THT]</property>
+  <property name="part number"></property>
+ </properties>
+ <taxonomy>part.dip.16.pins</taxonomy>
+ <description>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'.Lucida Grande UI'; font-size:13pt;">MP3 module by DFRobot.com for playing Music from an SD-Card. Supports WAV and MP3 files.&lt;/span>&lt;/p>&lt;/body>&lt;/html></description>
+ <views>
+  <iconView>
+   <layers image="icon/DFPlayer Mini_3ffa85fa3a0182096f67124857804a14_14_icon.svg">
+    <layer layerId="icon"/>
+   </layers>
+  </iconView>
+  <breadboardView>
+   <layers image="breadboard/DFPlayer Mini_3ffa85fa3a0182096f67124857804a14_14_breadboard.svg">
+    <layer layerId="breadboard"/>
+   </layers>
+  </breadboardView>
+  <schematicView>
+   <layers image="schematic/DFPlayer Mini_3ffa85fa3a0182096f67124857804a14_14_schematic.svg">
+    <layer layerId="schematic"/>
+   </layers>
+  </schematicView>
+  <pcbView>
+   <layers image="pcb/DFPlayer Mini_3ffa85fa3a0182096f67124857804a14_14_pcb.svg">
+    <layer layerId="silkscreen"/>
+    <layer layerId="copper0"/>
+    <layer layerId="copper1"/>
+   </layers>
+  </pcbView>
+ </views>
+ <connectors>
+  <connector name="VCC" id="connector0" type="male">
+   <description>Power Line 3.3-5V</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector0terminal" svgId="connector0pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector0terminal" svgId="connector0pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector0pin" layer="copper0"/>
+     <p svgId="connector0pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="RX" id="connector1" type="male">
+   <description>Serial RX</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector1terminal" svgId="connector1pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector1terminal" svgId="connector1pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector1pin" layer="copper0"/>
+     <p svgId="connector1pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="TX" id="connector2" type="male">
+   <description>Serial TX</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector2terminal" svgId="connector2pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector2terminal" svgId="connector2pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector2pin" layer="copper0"/>
+     <p svgId="connector2pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="DAC_R" id="connector3" type="male">
+   <description>DAC Right channel to amplifier</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector3terminal" svgId="connector3pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector3terminal" svgId="connector3pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector3pin" layer="copper0"/>
+     <p svgId="connector3pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="DAC_L" id="connector4" type="male">
+   <description>DAC Left channel to amplifier</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector4terminal" svgId="connector4pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector4terminal" svgId="connector4pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector4pin" layer="copper0"/>
+     <p svgId="connector4pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="SPK1" id="connector5" type="male">
+   <description>Mono 3W Speaker Connection 1</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector5terminal" svgId="connector5pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector5terminal" svgId="connector5pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector5pin" layer="copper0"/>
+     <p svgId="connector5pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="GND" id="connector6" type="male">
+   <description>Ground</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector6terminal" svgId="connector6pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector6terminal" svgId="connector6pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector6pin" layer="copper0"/>
+     <p svgId="connector6pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="SPK2" id="connector7" type="male">
+   <description>Mono 3W Speaker Connection 2</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector7terminal" svgId="connector7pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector7terminal" svgId="connector7pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector7pin" layer="copper0"/>
+     <p svgId="connector7pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="IO 1" id="connector8" type="male">
+   <description>Input Output 1, connected to GND VOL-</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector8terminal" svgId="connector8pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector8terminal" svgId="connector8pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector8pin" layer="copper0"/>
+     <p svgId="connector8pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="GND" id="connector9" type="male">
+   <description>Ground</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector9terminal" svgId="connector9pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector9terminal" svgId="connector9pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector9pin" layer="copper0"/>
+     <p svgId="connector9pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="IO 2" id="connector10" type="male">
+   <description>Imput Output 2, connectd to GND Vol +</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector10terminal" svgId="connector10pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector10terminal" svgId="connector10pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector10pin" layer="copper0"/>
+     <p svgId="connector10pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="K1/ADC_KEY" id="connector11" type="male">
+   <description>Play/Pause [KEY MODE]/ADC Key Input Port</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector11terminal" svgId="connector11pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector11terminal" svgId="connector11pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector11pin" layer="copper0"/>
+     <p svgId="connector11pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="K2/ADC_KEY" id="connector12" type="male">
+   <description>Next [KEY MODE]</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector12terminal" svgId="connector12pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector12terminal" svgId="connector12pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector12pin" layer="copper0"/>
+     <p svgId="connector12pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="USB +" id="connector13" type="male">
+   <description>USB + connector</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector13terminal" svgId="connector13pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector13terminal" svgId="connector13pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector13pin" layer="copper0"/>
+     <p svgId="connector13pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="USB -" id="connector14" type="male">
+   <description>USB - connector</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector14terminal" svgId="connector14pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector14terminal" svgId="connector14pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector14pin" layer="copper0"/>
+     <p svgId="connector14pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector name="BUSY" id="connector15" type="male">
+   <description>Indicates Play Status</description>
+   <views>
+    <breadboardView>
+     <p terminalId="connector15terminal" svgId="connector15pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p terminalId="connector15terminal" svgId="connector15pin" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector15pin" layer="copper0"/>
+     <p svgId="connector15pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+ </connectors>
+ <url>https://www.google.ru/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=6&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwj5v5XzpePKAhWFhywKHTiLDvkQFggrMAU&amp;url=http%3A%2F%2Fwww.dfrobot.com%2Fwiki%2Findex.php%2FDFPlayer_Mini_SKU%3ADFR0299&amp;usg=AFQjCNEcemPnN3MjyDNeD8A96-J0e6lk3A&amp;sig2=vuvCNL6__jEVOT3Zn23wSQ</url>
+</module>

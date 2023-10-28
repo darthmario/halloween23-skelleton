@@ -94,7 +94,7 @@ def getJoystick():
 #     headr_servo.write(rServo);
 #     headl_servo.write(lServo);
     #print("Joystick " + str(translatedXValue)+", "+str(translatedYValue))
-#     print("X " + str(translatedXValue) + " Y " + str(translatedYValue))
+    print("X " + str(translatedXValue) + " Y " + str(translatedYValue))
     
 def getMouthButton():
     buttonValue = mouth_button.value()
