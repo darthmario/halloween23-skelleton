@@ -32,6 +32,9 @@ headr_bottom = 20
 headl_servo = Servo(pin_id=3)
 headl_top = 20
 headl_bottom = 160
+
+mouth_status = "closed"
+head_status ="center"
 # We will have a joystick for moving the head
 # Joystick Setup (only using x & y no button)
 lcd.clear()
@@ -93,7 +96,6 @@ pico_busy = Pin(18)
 player = Player(uart=pico_uart0, busy_pin=pico_busy , volume=1.0)
 player.awaitconfig()
 player.awaitvolume()
-player.play(1,7)
 
 # We will have a library of audio to play for the script
 
@@ -161,9 +163,10 @@ def getJoystick():
 #     print("X " + str(translatedXValue) + " Y " + str(translatedYValue))
     
 def getMouthButton():
+    global mouth_status
     buttonValue = mouth_button.value()
-    #print("button" + str(buttonValue))
     if buttonValue == 0:
+#        if(mouth_status !=)
         mouth_servo.write(mouth_open)
     else:
         mouth_servo.write(mouth_closed)
@@ -178,6 +181,38 @@ def scanKeypad():
                 row[rowKey].value(0)
                 return(key)
         row[rowKey].value(0)
+
+def updateDisplay():
+    # when updating displays we'll also reset the skelleton
+    if mode == 1:
+        lcd.clear()
+        lcd.set_cursor(0,0)
+        lcd.print("Mode: Manual")
+        lcd.set_cursor(0,1)
+        lcd.print("Freeform")
+    elif mode == 2:
+        lcd.clear()
+        lcd.set_cursor(0,0)
+        lcd.print("Mode: Jukebox")
+        lcd.set_cursor(0,1)
+        lcd.print("Waiting for song")
+    else:
+        lcd.clear()
+        lcd.set_cursor(0,0)
+        lcd.print("Mode: Interactive")
+        lcd.set_cursor(0,1)
+        lcd.print("Waiting to select")
+        
+        
+def startSkelleton(key):
+    global mode
+    # if mode == 1:
+    getJoystick()
+    getMouthButton()
+    updateDisplay()
+    if key is not None:
+        player.play(1,int(key))
+
 def printKey():
     key=scanKeypad()
     global keypressed, mode
@@ -187,20 +222,21 @@ def printKey():
             keypressed = currentTime
             print("Key pressed is:{} ".format(key))
             if key is "*":
+                mode = 1
+                key = None
             elif key is "#":
+                mode = 3
+                key = None
             elif key is "0":
-            else:
-            player.play(1,int(key))
+                mode = 2
+                key = None
+                
+            # now we'll setup the s
+            startSkelleton(key)
 
 #### Main Program Loop
 while True:
-    # watch for keypress
+    # watch for keypress & kick off other stuff
     printKey()
-    # do this some other way to not block processing
-    mode
-    if mode == 1:
-        getJoystick()
-        getMouthButton()
-        #temporary sleep to limit what is displayed
-#         utime.sleep(0.1)
+
 
