@@ -1,7 +1,10 @@
 #this is a more focused setup of the skelleton with a little more structure
-from machine import Pin, ADC, I2C, UART
+from machine import Pin, ADC, I2C, UART, PWM
 import utime, math, time
 from servo import Servo
+from micropython_servo_pdm import ServoPDMRP2Irq
+from smooth_servo import SmoothEaseInOut
+
 from lcd_i2c import LCD
 # Ended up using https://github.com/ShrimpingIt/micropython-dfplayer
 # as it just works
@@ -23,13 +26,23 @@ lcd.set_cursor(0,1)
 lcd.print("Setup servos")
 
     # We will define 3 servos for use across the project
-mouth_servo = Servo(pin_id=1)	
+mouth_servo = Servo(pin_id=1)
+headr_pin = PWM(Pin(2))
+headl_pin = PWM(Pin(3))
+min_us=544.0
+max_us=2400.0
+min_angle=0.0
+max_angle=180.0
+freq=50
+headr_servo = ServoPDMRP2Irq(pwm=headr_pin, min_us=min_us, max_us=max_us, freq=freq, max_angle=max_angle, min_angle=min_angle)
+headl_servo = ServoPDMRP2Irq(pwm=headl_pin, min_us=min_us, max_us=max_us, freq=freq, max_angle=max_angle, min_angle=min_angle)
+
 mouth_open = 33
 mouth_closed = 68
-headr_servo = Servo(pin_id=2)
+
 headr_top = 160
 headr_bottom = 20
-headl_servo = Servo(pin_id=3)
+
 headl_top = 20
 headl_bottom = 160
 
@@ -126,7 +139,7 @@ lcd.print("Freeform")
 
 # Get and Print the Joystick inputs
 def getJoystick():
-
+    global head_status
     xValue = xAxis.read_u16()
     yValue = yAxis.read_u16()
     translatedXValue = math.floor(xValue / 65) / 1000
@@ -138,38 +151,76 @@ def getJoystick():
     
     if(translatedXValue >= .66):
         if(translatedYValue >=.66):
-            headr_servo.write(90);
-            headl_servo.write(180);
+#             headr_servo.write(90);
+#             headl_servo.write(180);
+            if head_status != "bottom_right":
+                head_status = "bottom_right"
+                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
+                headr_servo.move_to_angle(90, 500, SmoothEaseInOut)
+                headl_servo.move_to_angle(180, 500, SmoothEaseInOut);
         elif(translatedYValue <= .33):
-            headr_servo.write(0);
-            headl_servo.write(90);
+#             headr_servo.write(0);
+#             headl_servo.write(90);
+            if head_status != "bottom_left":
+                head_status = "bottom_left"
+                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
+                headr_servo.move_to_angle(0, 500, SmoothEaseInOut);
+                headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
         else:
-            headr_servo.write(0);
-            headl_servo.write(180);
+#             headr_servo.write(0);
+#             headl_servo.write(180);
+            if head_status != "center_bottom":
+                head_status = "center_bottom"
+                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
+                headr_servo.move_to_angle(0, 1000, SmoothEaseInOut);
+                headl_servo.move_to_angle(180, 1000, SmoothEaseInOut);
     elif(translatedXValue <= .33):
         if(translatedYValue >=.66):
-            headr_servo.write(180);
-            headl_servo.write(90);
+#             headr_servo.write(180);
+#             headl_servo.write(90);
+            if head_status != "top_right":
+                head_status = "top_right"
+                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
+                headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
+                headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
         elif(translatedYValue <= .33):
-            headr_servo.write(90);
-            headl_servo.write(0);
+#             headr_servo.write(90);
+#             headl_servo.write(0);
+            if head_status != "top_left":
+                head_status = "top_left"
+                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
+                headr_servo.move_to_angle(90, 500, SmoothEaseInOut);
+                headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
         else:
-            headr_servo.write(180);
-            headl_servo.write(0);
+#             headr_servo.write(180);
+#             headl_servo.write(0);
+            if head_status != "center_top":
+                head_status = "center_top"
+                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
+                headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
+                headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
     else:
-        headr_servo.write(90);
-        headl_servo.write(90);
-    
-#     print("X " + str(translatedXValue) + " Y " + str(translatedYValue))
-    
+#         headr_servo.write(90);
+#         headl_servo.write(90);
+        if head_status != "center":
+            head_status = "center"
+            print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
+            headr_servo.move_to_angle(90, 250, SmoothEaseInOut);
+            headl_servo.move_to_angle(90, 250, SmoothEaseInOut);
+       
 def getMouthButton():
     global mouth_status
     buttonValue = mouth_button.value()
     if buttonValue == 0:
-#        if(mouth_status !=)
-        mouth_servo.write(mouth_open)
+        if(mouth_status != "open"):
+            mouth_servo.write(mouth_open)
+            mouth_status = "open"
+            print("[\"mouth_open\", "+str(time.ticks_ms())+"]")
     else:
-        mouth_servo.write(mouth_closed)
+        if(mouth_status != "closed"):
+            mouth_servo.write(mouth_closed)
+            mouth_status ="closed"
+            print("[\"mouth_closed\", "+str(time.ticks_ms())+"]")
 
 def scanKeypad():
     global key
@@ -204,13 +255,12 @@ def updateDisplay():
         lcd.print("Waiting to select")
         
         
-def startSkelleton(key):
+def startSkelleton(key = None):
     global mode
     # if mode == 1:
-    getJoystick()
-    getMouthButton()
     updateDisplay()
     if key is not None:
+        print("starting track "+ key + " at time " + str(time.ticks_ms()))
         player.play(1,int(key))
 
 def printKey():
@@ -233,10 +283,17 @@ def printKey():
                 
             # now we'll setup the s
             startSkelleton(key)
+            
+# starting in manual mode
+startSkelleton()
 
 #### Main Program Loop
 while True:
     # watch for keypress & kick off other stuff
     printKey()
+    if mode == 1:
+        getJoystick()
+        getMouthButton()
+        
 
 
