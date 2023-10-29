@@ -3,8 +3,6 @@ from machine import Pin, ADC, I2C, UART
 import utime, math, time
 from servo import Servo
 from lcd_i2c import LCD
-# Ended up using https://github.com/ShrimpingIt/micropython-dfplayer
-# as it just works
 from dfplayer import Player
 
 # We will have a display to show what we're doing currently
@@ -22,8 +20,8 @@ lcd.print("Booting")
 lcd.set_cursor(0,1)
 lcd.print("Setup servos")
 
-    # We will define 3 servos for use across the project
-mouth_servo = Servo(pin_id=1)	
+# We will define 3 servos for use across the project
+mouth_servo = Servo(pin_id=1)
 mouth_open = 33
 mouth_closed = 68
 headr_servo = Servo(pin_id=2)
@@ -34,51 +32,13 @@ headl_top = 20
 headl_bottom = 160
 # We will have a joystick for moving the head
 # Joystick Setup (only using x & y no button)
-lcd.clear()
-lcd.set_cursor(0,0)
-lcd.print("Booting")
-lcd.set_cursor(0,1)
-lcd.print("Setup joystick")
 xAxis = ADC(Pin(27))
 yAxis = ADC(Pin(26))
 
-
 # We will have a button for opening and closing the mouth manually
-lcd.clear()
-lcd.set_cursor(0,0)
-lcd.print("Booting")
-lcd.set_cursor(0,1)
-lcd.print("Setup button")
 mouth_button = Pin(0, Pin.IN, Pin.PULL_UP)
 
 # We will have a keypad setup for choosing the phrases
-lcd.clear()
-lcd.set_cursor(0,0)
-lcd.print("Booting")
-lcd.set_cursor(0,1)
-lcd.print("Setup keypad")
-
-keyMatrix = [
-    [ "1",  "2",   "3"],
-    [ "4",    "5",   "6"],
-    [ "7",    "8",   "9"],
-    ["*",  "0", "#"]
-]
-
-colPins = [6,4,8]
-rowPins = [5,10,9,7]
-
-# keyscan setup
-row = []
-column = []
-keypressed = 0;
-
-for item in rowPins:
-    row.append(machine.Pin(item, machine.Pin.OUT))
-for item in colPins:
-    column.append(machine.Pin(item,machine.Pin.IN, machine.Pin.PULL_DOWN))
-key ='0'
-
 
 lcd.clear()
 lcd.set_cursor(0,0)
@@ -93,14 +53,28 @@ pico_busy = Pin(18)
 player = Player(uart=pico_uart0, busy_pin=pico_busy , volume=1.0)
 player.awaitconfig()
 player.awaitvolume()
-player.play(1,7)
+player.play(1,1)
+#wait some time till the DFPlayer is ready
+# utime.sleep(5)
+# df.send_cmd(15,1,0)
+# utime.sleep(1)
+# print(df.send_cmd(72,0,0))
+# utime.sleep(1)
+# df.reset()
+# utime.sleep(1)
+# print(df.get_files_in_folder(1))
+# utime.sleep(1)
+# print(df.get_files_in_folder(4))
+# df.volume(30)
+# utime.sleep(1)
+# print(df.get_volume())
 
 # We will have a library of audio to play for the script
 
 
 ### Three Modes ###
 # 1. Manual - done
-# 2. Jukebox - planned
+# 2. Automatic - planned
 # 3. Interactive - planned
 ###
 
@@ -133,6 +107,7 @@ def getJoystick():
     # left and right adjust the influence of up and down for left or right servo
     rServo = 20+(140*translatedXValue)
     lServo = 180-(140*translatedXValue)
+    
     
     if(translatedXValue >= .66):
         if(translatedYValue >=.66):
@@ -168,35 +143,10 @@ def getMouthButton():
     else:
         mouth_servo.write(mouth_closed)
 
-def scanKeypad():
-    global key
-    for rowKey in range(4):
-        row[rowKey].value(1)
-        for colKey in range(3):
-            if column[colKey].value() == 1:
-                key = keyMatrix[rowKey][colKey]
-                row[rowKey].value(0)
-                return(key)
-        row[rowKey].value(0)
-def printKey():
-    key=scanKeypad()
-    global keypressed, mode
-    if key is not None:
-        currentTime = time.ticks_ms()
-        if (keypressed + 500) < currentTime:
-            keypressed = currentTime
-            print("Key pressed is:{} ".format(key))
-            if key is "*":
-            elif key is "#":
-            elif key is "0":
-            else:
-            player.play(1,int(key))
 
 #### Main Program Loop
 while True:
-    # watch for keypress
-    printKey()
-    # do this some other way to not block processing
+    player.volume(0.2)
     mode
     if mode == 1:
         getJoystick()
