@@ -46,7 +46,7 @@ headr_bottom = 20
 headl_top = 20
 headl_bottom = 160
 
-mouth_status = "closed"
+mouth_status = "mouth_closed"
 head_status ="center"
 # We will have a joystick for moving the head
 # Joystick Setup (only using x & y no button)
@@ -151,76 +151,77 @@ def getJoystick():
     
     if(translatedXValue >= .66):
         if(translatedYValue >=.66):
-#             headr_servo.write(90);
-#             headl_servo.write(180);
             if head_status != "bottom_right":
                 head_status = "bottom_right"
-                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
-                headr_servo.move_to_angle(90, 500, SmoothEaseInOut)
-                headl_servo.move_to_angle(180, 500, SmoothEaseInOut);
+                moveServos(head_status)
         elif(translatedYValue <= .33):
-#             headr_servo.write(0);
-#             headl_servo.write(90);
             if head_status != "bottom_left":
                 head_status = "bottom_left"
-                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
-                headr_servo.move_to_angle(0, 500, SmoothEaseInOut);
-                headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
+                moveServos(head_status)
         else:
-#             headr_servo.write(0);
-#             headl_servo.write(180);
             if head_status != "center_bottom":
                 head_status = "center_bottom"
-                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
-                headr_servo.move_to_angle(0, 1000, SmoothEaseInOut);
-                headl_servo.move_to_angle(180, 1000, SmoothEaseInOut);
+                moveServos(head_status)
     elif(translatedXValue <= .33):
         if(translatedYValue >=.66):
-#             headr_servo.write(180);
-#             headl_servo.write(90);
             if head_status != "top_right":
                 head_status = "top_right"
-                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
-                headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
-                headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
+                moveServos(head_status)
         elif(translatedYValue <= .33):
-#             headr_servo.write(90);
-#             headl_servo.write(0);
             if head_status != "top_left":
                 head_status = "top_left"
-                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
-                headr_servo.move_to_angle(90, 500, SmoothEaseInOut);
-                headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
+                moveServos(head_status)
         else:
-#             headr_servo.write(180);
-#             headl_servo.write(0);
             if head_status != "center_top":
                 head_status = "center_top"
-                print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
-                headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
-                headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
+                moveServos(head_status)
     else:
-#         headr_servo.write(90);
-#         headl_servo.write(90);
         if head_status != "center":
             head_status = "center"
-            print("[\""+head_status+"\", "+str(time.ticks_ms())+"]")
-            headr_servo.move_to_angle(90, 250, SmoothEaseInOut);
-            headl_servo.move_to_angle(90, 250, SmoothEaseInOut);
+            moveServos(head_status)
        
 def getMouthButton():
     global mouth_status
     buttonValue = mouth_button.value()
     if buttonValue == 0:
-        if(mouth_status != "open"):
-            mouth_servo.write(mouth_open)
-            mouth_status = "open"
-            print("[\"mouth_open\", "+str(time.ticks_ms())+"]")
+        if(mouth_status != "mouth_open"):
+            mouth_status = "mouth_open"
+            moveServos(mouth_status)
     else:
-        if(mouth_status != "closed"):
+        if(mouth_status != "mouth_closed"):
+            mouth_status ="mouth_closed"
+            moveServos(mouth_status)
+            
+def moveServos(command = ""):
+    if "mouth" in command:
+        if(command == "mouth_open"):
+            mouth_servo.write(mouth_open)
+        else:
             mouth_servo.write(mouth_closed)
-            mouth_status ="closed"
-            print("[\"mouth_closed\", "+str(time.ticks_ms())+"]")
+    else:
+        if command == "bottom_right":
+            headr_servo.move_to_angle(90, 500, SmoothEaseInOut)
+            headl_servo.move_to_angle(180, 500, SmoothEaseInOut);
+        elif command == "bottom_left":
+            headr_servo.move_to_angle(0, 500, SmoothEaseInOut);
+            headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
+        elif command == "center_bottom":
+            headr_servo.move_to_angle(0, 1000, SmoothEaseInOut);
+            headl_servo.move_to_angle(180, 1000, SmoothEaseInOut);
+        elif command == "top_right":
+            headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
+            headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
+        elif command == "top_left":
+            headr_servo.move_to_angle(90, 500, SmoothEaseInOut);
+            headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
+        elif command == "center_top":
+            headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
+            headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
+        else:
+            headr_servo.move_to_angle(90, 500, SmoothEaseInOut);
+            headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
+    print("[\""+command+"\", "+str(time.ticks_ms())+"]")
+    
 
 def scanKeypad():
     global key
