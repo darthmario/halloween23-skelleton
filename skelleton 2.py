@@ -17,6 +17,8 @@ I2C_ADDR = 0x27     # DEC 39, HEX 0x27
 NUM_ROWS = 2
 NUM_COLS = 16
 
+recording_offset = 0
+
 i2c = I2C(0, scl=Pin(21), sda=Pin(20), freq=800000)
 lcd = LCD(addr=I2C_ADDR, cols=NUM_COLS, rows=NUM_ROWS, i2c=i2c)
 lcd.begin()
@@ -220,7 +222,7 @@ def moveServos(command = ""):
         else:
             headr_servo.move_to_angle(90, 500, SmoothEaseInOut);
             headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
-    print("[\""+command+"\", "+str(time.ticks_ms())+"]")
+    print("[\""+command+"\", "+str(time.ticks_ms() - recording_offset)+"]")
     
 
 def scanKeypad():
@@ -257,12 +259,13 @@ def updateDisplay():
         
         
 def startSkelleton(key = None):
-    global mode
+    global mode, recording_offset
     # if mode == 1:
     updateDisplay()
     if key is not None:
-        print("starting track "+ key + " at time " + str(time.ticks_ms()))
-        player.play(1,int(key))
+        recording_offset = time.ticks_ms();
+        print("starting track "+ key + " at time " + str(recording_offset))
+        player.play(10,int(key))
 
 def printKey():
     key=scanKeypad()
