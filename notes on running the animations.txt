@@ -1,0 +1,12 @@
+we can have a function that gets called every loop
+
+The list with the items gets copied to a variable, when the list is processed goes through the variable,
+
+When the next item in the list is up it can then look to see when the time is the same or greater and pop it from the top of the list,
+
+Then it can move to the next item when ready.  If the variable is empty it does nothing.
+  
+
+  We will use the collections.dequeu to be able to popleft and remove the first item when it is sent to the servo function
+
+  https://docs.micropython.org/en/latest/library/collections.html

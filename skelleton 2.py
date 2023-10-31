@@ -4,11 +4,23 @@ import utime, math, time
 from servo import Servo
 from micropython_servo_pdm import ServoPDMRP2Irq
 from smooth_servo import SmoothEaseInOut
+from collections import deque
 
 from lcd_i2c import LCD
 # Ended up using https://github.com/ShrimpingIt/micropython-dfplayer
 # as it just works
 from dfplayer import Player
+from animHelloImp import *
+from animHelloCute import *
+from animHelloShock import *
+from animQuestions import *
+from animParents import *
+from animJokes import *
+from animSFX import *
+from animGoodbye import *
+from animIdle import *
+from song1 import *
+from song9 import *
 
 # We will have a display to show what we're doing currently
 # library uses https://micropython-i2c-lcd.readthedocs.io/en/latest/EXAMPLES.html
@@ -18,6 +30,8 @@ NUM_ROWS = 2
 NUM_COLS = 16
 
 recording_offset = 0
+playback_offset = 0
+currentAnimation = []
 
 i2c = I2C(0, scl=Pin(21), sda=Pin(20), freq=800000)
 lcd = LCD(addr=I2C_ADDR, cols=NUM_COLS, rows=NUM_ROWS, i2c=i2c)
@@ -291,10 +305,26 @@ def printKey():
 # starting in manual mode
 startSkelleton()
 
+def controlAnimation():
+    if len(currentAnimation) is not 0:
+        currentTime = time.ticks_ms() - playback_offset
+        nextTimestamp = currentAnimation[0][1]
+        if currentTime >= nextTimestamp:
+            print(currentAnimation[0])
+            moveServos(currentAnimation[0][0])
+            currentAnimation.pop(0)
+            
+
+
+playback_offset = time.ticks_ms()
+currentAnimation = song1
+player.play(10,1)
+
 #### Main Program Loop
 while True:
     # watch for keypress & kick off other stuff
     printKey()
+    controlAnimation()
     if mode == 1:
         getJoystick()
         getMouthButton()
