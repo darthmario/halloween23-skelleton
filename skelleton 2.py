@@ -53,8 +53,8 @@ freq=50
 headr_servo = ServoPDMRP2Irq(pwm=headr_pin, min_us=min_us, max_us=max_us, freq=freq, max_angle=max_angle, min_angle=min_angle)
 headl_servo = ServoPDMRP2Irq(pwm=headl_pin, min_us=min_us, max_us=max_us, freq=freq, max_angle=max_angle, min_angle=min_angle)
 
-mo = 33
-mc = 68
+mouth_open = 33
+mouth_closed = 68
 
 headr_top = 160
 headr_bottom = 20
@@ -62,8 +62,8 @@ headr_bottom = 20
 headl_top = 20
 headl_bottom = 160
 
-mouth_status = "mc"
-head_status ="hc"
+mouth_status = "mouth_closed"
+head_status ="center"
 # We will have a joystick for moving the head
 # Joystick Setup (only using x & y no button)
 lcd.clear()
@@ -167,70 +167,70 @@ def getJoystick():
     
     if(translatedXValue >= .66):
         if(translatedYValue >=.66):
-            if head_status != "hbr":
-                head_status = "hbr"
+            if head_status != "bottom_right":
+                head_status = "bottom_right"
                 moveServos(head_status)
         elif(translatedYValue <= .33):
-            if head_status != "hbl":
-                head_status = "hbl"
+            if head_status != "bottom_left":
+                head_status = "bottom_left"
                 moveServos(head_status)
         else:
-            if head_status != "hcb":
-                head_status = "hcb"
+            if head_status != "center_bottom":
+                head_status = "center_bottom"
                 moveServos(head_status)
     elif(translatedXValue <= .33):
         if(translatedYValue >=.66):
-            if head_status != "htr":
-                head_status = "htr"
+            if head_status != "top_right":
+                head_status = "top_right"
                 moveServos(head_status)
         elif(translatedYValue <= .33):
-            if head_status != "htl":
-                head_status = "htl"
+            if head_status != "top_left":
+                head_status = "top_left"
                 moveServos(head_status)
         else:
-            if head_status != "hct":
-                head_status = "hct"
+            if head_status != "center_top":
+                head_status = "center_top"
                 moveServos(head_status)
     else:
-        if head_status != "hc":
-            head_status = "hc"
+        if head_status != "center":
+            head_status = "center"
             moveServos(head_status)
        
 def getMouthButton():
     global mouth_status
     buttonValue = mouth_button.value()
     if buttonValue == 0:
-        if(mouth_status != "mo"):
-            mouth_status = "mo"
+        if(mouth_status != "mouth_open"):
+            mouth_status = "mouth_open"
             moveServos(mouth_status)
     else:
-        if(mouth_status != "mc"):
-            mouth_status ="mc"
+        if(mouth_status != "mouth_closed"):
+            mouth_status ="mouth_closed"
             moveServos(mouth_status)
             
 def moveServos(command = ""):
-    if command == "mc" or command == "mo":
+    if "mouth" in command:
         if(command == "mouth_open"):
-            mouth_servo.write(mo)
+            mouth_servo.write(mouth_open)
         else:
-            mouth_servo.write(mc)
+            mouth_servo.write(mouth_closed)
     else:
-        if command == "hbr":
+        if command == "bottom_right":
             headr_servo.move_to_angle(90, 500, SmoothEaseInOut)
             headl_servo.move_to_angle(180, 500, SmoothEaseInOut);
-        elif command == "hbl":
+        elif command == "bottom_left":
             headr_servo.move_to_angle(0, 500, SmoothEaseInOut);
             headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
-        elif command == "hcb":
+        elif command == "center_bottom":
             headr_servo.move_to_angle(0, 1000, SmoothEaseInOut);
             headl_servo.move_to_angle(180, 1000, SmoothEaseInOut);
-        elif command == "htr":
+        elif command == "top_right":
             headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
             headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
-        elif command == "htl":
+        elif command == "top_left":
             headr_servo.move_to_angle(90, 500, SmoothEaseInOut);
             headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
-        elif command == "hct":
+        elif command == "center_top":
             headr_servo.move_to_angle(180, 500, SmoothEaseInOut);
             headl_servo.move_to_angle(0, 500, SmoothEaseInOut);
         else:
