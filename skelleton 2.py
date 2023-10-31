@@ -1,10 +1,9 @@
 #this is a more focused setup of the skelleton with a little more structure
 from machine import Pin, ADC, I2C, UART, PWM
-import utime, math, time
+import utime, math, time, random
 from servo import Servo
 from micropython_servo_pdm import ServoPDMRP2Irq
 from smooth_servo import SmoothEaseInOut
-from collections import deque
 
 from lcd_i2c import LCD
 # Ended up using https://github.com/ShrimpingIt/micropython-dfplayer
@@ -19,8 +18,8 @@ from animJokes import *
 from animSFX import *
 from animGoodbye import *
 from animIdle import *
-from song1 import *
-from song9 import *
+# from song1 import *
+# from song9 import *
 
 # We will have a display to show what we're doing currently
 # library uses https://micropython-i2c-lcd.readthedocs.io/en/latest/EXAMPLES.html
@@ -236,7 +235,7 @@ def moveServos(command = ""):
         else:
             headr_servo.move_to_angle(90, 500, SmoothEaseInOut);
             headl_servo.move_to_angle(90, 500, SmoothEaseInOut);
-    print("[\""+command+"\", "+str(time.ticks_ms() - recording_offset)+"]")
+    # print("[\""+command+"\", "+str(time.ticks_ms() - recording_offset)+"]")
     
 
 def scanKeypad():
@@ -278,8 +277,61 @@ def startSkelleton(key = None):
     updateDisplay()
     if key is not None:
         recording_offset = time.ticks_ms();
-        print("starting track "+ key + " at time " + str(recording_offset))
-        player.play(10,int(key))
+#         print("starting track "+ key + " at time " + str(recording_offset))
+#         player.play(10,int(key))
+        if mode == 2:
+            lcd.clear()
+            lcd.set_cursor(0,0)
+            lcd.print("Mode: Jukebox")
+            lcd.set_cursor(0,1)
+            lcd.print("Playing track " + key)
+            player.play(10,int(key))
+        elif mode == 3:
+            playRandomAnimation(key)
+            
+def playRandomAnimation(key):
+    global playback_offset, currentAnimation
+    selectedPlaylist = []
+    playlistString =""
+    if key == "1":
+        selectedPlaylist = helloImp
+        playlistString = "Hi Impress"
+    elif key == "2":
+        selectedPlaylist = helloCute
+        playlistString = "Hi Cute"
+    elif key == "3":
+        selectedPlaylist = helloShock
+        playlistString = "Hi Shock"
+    elif key == "4":
+        selectedPlaylist = question
+        playlistString = "Question"
+    elif key == "5":
+        selectedPlaylist = parents
+        playlistString = "Parents"
+    elif key == "6":
+        selectedPlaylist = jokes
+        playlistString = "Joke"
+    elif key == "7":
+        selectedPlaylist = sfx
+        playlistString = "SFX"
+    elif key == "8":
+        selectedPlaylist = goodbye
+        playlistString = "Goodbye"
+    elif key == "9":
+        selectedPlaylist = idle
+        playlistString = "Idle"
+    print("seleted playlist")
+    selectedAnswer = random.randint(1, len(selectedPlaylist))
+    playback_offset = time.ticks_ms()
+    currentAnimation = selectedPlaylist[selectedAnswer - 1][:]
+    player.play(int(key),int(selectedAnswer))
+    lcd.clear()
+    lcd.set_cursor(0,0)
+    lcd.print("Mode: Interactive")
+    lcd.set_cursor(0,1)
+    lcd.print(playlistString + " " + str(selectedAnswer))
+
+    # currentAnimation = song1
 
 def printKey():
     key=scanKeypad()
@@ -310,15 +362,9 @@ def controlAnimation():
         currentTime = time.ticks_ms() - playback_offset
         nextTimestamp = currentAnimation[0][1]
         if currentTime >= nextTimestamp:
-            print(currentAnimation[0])
+            #print(currentAnimation[0])
             moveServos(currentAnimation[0][0])
             currentAnimation.pop(0)
-            
-
-
-playback_offset = time.ticks_ms()
-currentAnimation = song1
-player.play(10,1)
 
 #### Main Program Loop
 while True:
@@ -328,6 +374,10 @@ while True:
     if mode == 1:
         getJoystick()
         getMouthButton()
+    elif mode == 3:
+        getJoystick()
+        getMouthButton()
+        
         
 
 
