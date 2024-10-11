@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: smooth-servo
+Version: 0.0.2
+Summary: This library provides a set of slowdowns for my servo packages.
+Home-page: https://github.com/TTitanUA/servo_smooth
+Author: TTitanUA
+Author-email: xttitanx@gmail.com
+License: MIT
+
