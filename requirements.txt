@@ -1,0 +1,4 @@
+micropython-dfplayer==1.0.4
+micropython-i2c-lcd==0.1.1
+micropython-servo-pdm==0.0.2
+smooth-servo==0.0.2
